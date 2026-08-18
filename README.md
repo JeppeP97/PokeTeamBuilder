@@ -27,13 +27,23 @@ AI-coachet analyse der ender i konkrete, navngivne erstatningsforslag.
 npm install
 npm run dev      # http://localhost:3000
 npm run smoke    # verificerer PokéAPI-datalaget for begge spil
-npm run verify:types  # 332 tjek af Gen 3-type-tabellen og team-matematikken
+npm run verify:types       # 332 tjek af Gen 3-type-tabellen og team-matematikken
+npm run verify:candidates  # 20 tjek af shortlist-logikken
 npm run build
 ```
 
-`GET /api/health` returnerer pool-størrelser, et konkret Pokémon-opslag og
-movesets pr. spil som JSON — nyttigt til at bekræfte at datalaget virker i
-et deploy.
+## Endpoints
+
+`GET /api/health` — pool-størrelser, et konkret Pokémon-opslag og movesets
+pr. spil. Bekræfter at datalaget virker i et deploy.
+
+`GET /api/suggest?game=emerald&team=swellow,manectric,gardevoir` — den
+færdigberegnede analyse: kritiske trusler, uresisterede typer, offensive
+huller, og en rangeret shortlist af navngivne udskiftninger med
+begrundelser. Ingen AI involveret — dette er sandheden AI-laget senere
+skal formulere.
+
+Parametre: `limit` (1-10), `minBst` (0-700, default 400), `legendaries=true`.
 
 ## Miljøvariabler
 
@@ -53,11 +63,16 @@ client component. På Vercel sættes den som Environment Variable.
 src/
   app/
     api/health/route.ts   # datalags-healthcheck (JSON)
+    api/suggest/route.ts  # analyse + shortlist (ren kode, ingen AI)
     page.tsx              # status-side: pools + sample pr. spil
   data/
     type-chart.gen3.json  # 17 typer, ingen Fairy, Gen 3-interaktioner
+    legendaries.ts        # frasorteres fra shortlisten som standard
   lib/
-    analysis/team.ts      # team-matematik: trusler, coverage, huller
+    analysis/
+      team.ts             # team-matematik: trusler, coverage, huller
+      score.ts            # én score pr. hold, så hold kan sammenlignes
+      candidates.ts       # rangerede udskiftninger med begrundelser
     types/type-chart.ts   # effectiveness + defensive profiler
     games/games.ts        # FireRed/Emerald → pokedex + version-group
     pokeapi/
@@ -68,6 +83,7 @@ src/
 scripts/
   smoke-pokeapi.ts        # end-to-end datatjek
   verify-type-chart.ts    # tjekker type-tabellen mod kendte Gen 3-facts
+  verify-candidates.ts    # tjekker shortlist-logikken uden netværk
 ```
 
 ## Roadmap
@@ -75,6 +91,6 @@ scripts/
 - [x] Scaffold + PokéAPI-datalag med cache
 - [x] Gen 3-type-tabel som lokal JSON (ingen Fairy, gammel Dark/Ghost/Steel)
 - [x] Team-analyse i ren kode: defensiv dækning, offensiv coverage, huller
-- [ ] Kandidat-shortlist ud fra beregnede huller + spillets pool
+- [x] Kandidat-shortlist ud fra beregnede huller + spillets pool
 - [ ] `/api/analyze`: Anthropic-kald der formulerer analysen
 - [ ] Team-builder UI

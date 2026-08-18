@@ -18,7 +18,7 @@ AI-coachet analyse der ender i konkrete, navngivne erstatningsforslag.
 | Pokémon-data | PokéAPI, live med to-lags cache (memory + disk) |
 | Pool pr. spil | `/pokedex/kanto` (FireRed), `/pokedex/hoenn` (Emerald) |
 | Movesets | version-group `firered-leafgreen` / `emerald` |
-| Type-tabel | *(næste trin)* lokal JSON, Gen 3-korrekt — ingen Fairy |
+| Type-tabel | lokal JSON, Gen 3-korrekt — ingen Fairy, Steel resisterer Ghost/Dark |
 | AI | Anthropic API via serverless route handler, nøgle kun server-side |
 
 ## Kom i gang
@@ -27,6 +27,7 @@ AI-coachet analyse der ender i konkrete, navngivne erstatningsforslag.
 npm install
 npm run dev      # http://localhost:3000
 npm run smoke    # verificerer PokéAPI-datalaget for begge spil
+npm run verify:types  # 332 tjek af Gen 3-type-tabellen og team-matematikken
 npm run build
 ```
 
@@ -53,7 +54,11 @@ src/
   app/
     api/health/route.ts   # datalags-healthcheck (JSON)
     page.tsx              # status-side: pools + sample pr. spil
+  data/
+    type-chart.gen3.json  # 17 typer, ingen Fairy, Gen 3-interaktioner
   lib/
+    analysis/team.ts      # team-matematik: trusler, coverage, huller
+    types/type-chart.ts   # effectiveness + defensive profiler
     games/games.ts        # FireRed/Emerald → pokedex + version-group
     pokeapi/
       client.ts           # fetch m. retry + concurrency-limiter
@@ -62,13 +67,14 @@ src/
       index.ts            # pools, Pokémon, version-filtrerede movesets
 scripts/
   smoke-pokeapi.ts        # end-to-end datatjek
+  verify-type-chart.ts    # tjekker type-tabellen mod kendte Gen 3-facts
 ```
 
 ## Roadmap
 
 - [x] Scaffold + PokéAPI-datalag med cache
-- [ ] Gen 3-type-tabel som lokal JSON (ingen Fairy, gammel Dark/Ghost/Steel)
-- [ ] Team-analyse i ren kode: defensiv dækning, offensiv coverage, huller
+- [x] Gen 3-type-tabel som lokal JSON (ingen Fairy, gammel Dark/Ghost/Steel)
+- [x] Team-analyse i ren kode: defensiv dækning, offensiv coverage, huller
 - [ ] Kandidat-shortlist ud fra beregnede huller + spillets pool
 - [ ] `/api/analyze`: Anthropic-kald der formulerer analysen
 - [ ] Team-builder UI

@@ -1,0 +1,46 @@
+{
+  "$comment": "Gen 3 (Ruby/Sapphire/FireRed/LeafGreen/Emerald) type chart. 17 typer - INGEN Fairy. Bemærk Gen 3-specifikke ting: Steel resisterer Ghost og Dark (ændret i Gen 6), og damage-kategori (physical/special) bestemmes af typen, ikke af det enkelte move.",
+  "generation": 3,
+  "types": [
+    "normal", "fighting", "flying", "poison", "ground", "rock", "bug", "ghost",
+    "steel", "fire", "water", "grass", "electric", "psychic", "ice", "dragon", "dark"
+  ],
+  "damageClass": {
+    "normal": "physical",
+    "fighting": "physical",
+    "flying": "physical",
+    "poison": "physical",
+    "ground": "physical",
+    "rock": "physical",
+    "bug": "physical",
+    "ghost": "physical",
+    "steel": "physical",
+    "fire": "special",
+    "water": "special",
+    "grass": "special",
+    "electric": "special",
+    "psychic": "special",
+    "ice": "special",
+    "dragon": "special",
+    "dark": "special"
+  },
+  "chart": {
+    "normal":   { "superEffective": [], "notVeryEffective": ["rock", "steel"], "noEffect": ["ghost"] },
+    "fighting": { "superEffective": ["normal", "rock", "steel", "ice", "dark"], "notVeryEffective": ["flying", "poison", "bug", "psychic"], "noEffect": ["ghost"] },
+    "flying":   { "superEffective": ["fighting", "bug", "grass"], "notVeryEffective": ["rock", "steel", "electric"], "noEffect": [] },
+    "poison":   { "superEffective": ["grass"], "notVeryEffective": ["poison", "ground", "rock", "ghost"], "noEffect": ["steel"] },
+    "ground":   { "superEffective": ["poison", "rock", "steel", "fire", "electric"], "notVeryEffective": ["bug", "grass"], "noEffect": ["flying"] },
+    "rock":     { "superEffective": ["flying", "bug", "fire", "ice"], "notVeryEffective": ["fighting", "ground", "steel"], "noEffect": [] },
+    "bug":      { "superEffective": ["grass", "psychic", "dark"], "notVeryEffective": ["fighting", "flying", "poison", "ghost", "steel", "fire"], "noEffect": [] },
+    "ghost":    { "superEffective": ["ghost", "psychic"], "notVeryEffective": ["steel", "dark"], "noEffect": ["normal"] },
+    "steel":    { "superEffective": ["rock", "ice"], "notVeryEffective": ["steel", "fire", "water", "electric"], "noEffect": [] },
+    "fire":     { "superEffective": ["bug", "steel", "grass", "ice"], "notVeryEffective": ["rock", "fire", "water", "dragon"], "noEffect": [] },
+    "water":    { "superEffective": ["ground", "rock", "fire"], "notVeryEffective": ["water", "grass", "dragon"], "noEffect": [] },
+    "grass":    { "superEffective": ["ground", "rock", "water"], "notVeryEffective": ["flying", "poison", "bug", "steel", "fire", "grass", "dragon"], "noEffect": [] },
+    "electric": { "superEffective": ["flying", "water"], "notVeryEffective": ["grass", "electric", "dragon"], "noEffect": ["ground"] },
+    "psychic":  { "superEffective": ["fighting", "poison"], "notVeryEffective": ["steel", "psychic"], "noEffect": ["dark"] },
+    "ice":      { "superEffective": ["flying", "ground", "grass", "dragon"], "notVeryEffective": ["steel", "fire", "water", "ice"], "noEffect": [] },
+    "dragon":   { "superEffective": ["dragon"], "notVeryEffective": ["steel"], "noEffect": [] },
+    "dark":     { "superEffective": ["ghost", "psychic"], "notVeryEffective": ["fighting", "steel", "dark"], "noEffect": [] }
+  }
+}
